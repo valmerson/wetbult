@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="City_panel.css" />
+    <title>City Panel</title>
+  </head>
+  <body>
+    <div id="intro-container">
+      <iframe src="infochart_test.html"></iframe>
+      <div id="content">
+        <h1>El 'Calor que asfixia'</h1>
+        <p>
+          Temperatura de bulbo húmedo y Sensación Térmica Extrema en las
+          Principales Ciudades de América Latina
+        </p>
+      </div>
+      <div id="image-overlay"></div>
+    </div>
+
+    <div id="ground">
+      <div id="main_head">
+        <p>
+          La capacidad humana para regular la temperatura corporal ha sido clave
+          para el éxito de nuestra especie en diversos ecosistemas del mundo.
+          Esta habilidad nos permitió habitar prácticamente todos los
+          continentes, pero también tiene un límite biológico. La temperatura de
+          bulbo húmedo (TW), que combina calor y humedad, define este límite.
+          Cuando la TW supera los 35°C, el cuerpo humano pierde la capacidad de
+          enfriarse de manera eficaz, enfrentando serios riesgos para la vida.
+        </p>
+      </div>
+
+      <div class="termometro-container">
+        <div class="termometro-head"></div>
+        <input
+          id="termometro"
+          type="range"
+          min="24"
+          max="34"
+          step="2"
+          value="24"
+        />
+      </div>
+
+      <div id="impactos">
+        <p id="temp"></p>
+        <p id="humano"></p>
+        <p id="ambiente"></p>
+      </div>
+      <div id="intermed">
+        <p>
+          Con el cambio climático, el aumento de la TW se está convirtiendo en
+          un problema cada vez más presente, especialmente en regiones
+          tropicales y subtropicales, como las de América Latina. Factores como
+          la urbanización desordenada, el efecto de isla de calor y la
+          proximidad a océanos con temperaturas superficiales elevadas agravan
+          la situación. Según ONU-Hábitat (2022), cerca del 80% de la población
+          de América Latina vive en áreas urbanas, y esta proporción sigue en
+          aumento. Esta realidad coloca a las ciudades densamente pobladas de la
+          región en la primera línea de los impactos climáticos.
+        </p>
+      </div>
+      <div id="exploratory_path">
+        <div id="selector">
+          <label for="city-search"
+            >Elegir ciudades:
+            <p></p>
+          </label>
+          <input
+            type="text"
+            id="city-search"
+            list="cities"
+            placeholder="Type to search..."
+            autocomplete="on"
+          />
+          <datalist id="cities"></datalist>
+          <hr />
+          <div id="checkbox-container"></div>
+          <button id="clear-button">Limpiar filtro</button>
+        </div>
+
+        <div id="container-chart">
+          <svg
+            id="slopechart"
+            viewBox="0 0 1000 500"
+            preserveAspectRatio="xMidYMid meet"
+          ></svg>
+          <script src="https://d3js.org/d3.v7.min.js"></script>
+          <script src="dados_city_panel.js"></script>
+        </div>
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            const termometro = document.getElementById("termometro");
+            const temp = document.getElementById("temp");
+            const humano = document.getElementById("humano");
+            const ambiente = document.getElementById("ambiente");
+            let ultimoValorTermometro = "24";
+
+            const temperaturas = [
+              {
+                celsius: 26,
+                humano:
+                  "Malestar y reducción de la capacidad cognitiva: Al alcanzar aproximadamente 26°C, se produce un aumento del malestar térmico y una reducción de la capacidad cognitiva, afectando a la memoria y a la velocidad de reacción.",
+                ambiente:
+                  "Estrés en los ecosistemas acuáticos: A partir de los 26 °C, los ecosistemas acuáticos empiezan a sufrir bajos niveles de oxígeno disuelto, lo que afecta negativamente a la vida acuática.",
+                cor: "#FF9900",
+              },
+              {
+                celsius: 28,
+                humano:
+                  "Estrés térmico y riesgo de deshidratación: A unos 28 °C, aumenta el estrés térmico, lo que conlleva riesgos de deshidratación y desequilibrios electrolíticos.",
+                ambiente:
+                  "Cambios en los patrones de vegetación: Con la temperatura de bulbo húmedo a 28°C, la vegetación empieza a demandar más agua, potenciando las condiciones de sequía y alterando los biomas.",
+                cor: "#F48800",
+              },
+              {
+                celsius: 30,
+                humano:
+                  "Reducción de la capacidad física y riesgo de agotamiento por calor: Al acercarse a los 30 °C, se produce una reducción significativa de la capacidad física y aumenta el riesgo de agotamiento por calor.",
+                ambiente:
+                  "Aumento de la frecuencia e intensidad de los incendios forestales: Alrededor de los 30°C, aumentan la probabilidad y la intensidad de los incendios forestales, que devastan los ecosistemas y liberan grandes cantidades de CO2.",
+                cor: "#E87700",
+              },
+              {
+                celsius: 32,
+                humano:
+                  "Golpe de calor y riesgo de complicaciones graves: Cuando se alcanzan los 32 °C, el golpe de calor se convierte en una seria amenaza y puede causar daños cerebrales y fallos orgánicos.",
+                ambiente:
+                  "Impacto en las migraciones y extinciones de especies: Con temperaturas cercanas a los 32°C, muchas especies pueden empezar a emigrar o enfrentarse a extinciones localizadas por incapacidad de adaptación.",
+                cor: "#CB4800",
+              },
+              {
+                celsius: 34,
+                humano:
+                  "Umbral crítico y mortalidad: A 35 °C, las condiciones prolongadas pueden provocar la muerte debido a la incapacidad del organismo para regular su temperatura.",
+                ambiente:
+                  "Cambios irreversibles en los ecosistemas: Las temperaturas del bulbo húmedo de 35 °C pueden provocar cambios irreversibles en muchos ecosistemas mundiales, afectando permanentemente a los servicios ecosistémicos.",
+                cor: "#980200",
+              },
+            ];
+
+            function mostrarImpacto() {
+              const match = temperaturas.find(
+                (temperatura) =>
+                  temperatura.celsius === Number(termometro.value)
+              );
+
+              if (!match) return;
+
+              temp.textContent = match.celsius + "°C";
+              humano.textContent = match.humano;
+              ambiente.textContent = match.ambiente;
+              document.body.style.backgroundColor = match.cor;
+              ultimoValorTermometro = termometro.value;
+            }
+
+            termometro.oninput = mostrarImpacto;
+            mostrarImpacto();
+
+            window.addEventListener("scroll", function () {
+              if (ultimoValorTermometro === "34") {
+                document.body.style.backgroundColor = "#262624";
+                ultimoValorTermometro = "";
+              }
+            });
+          });
+        </script>
+        <script>
+          const width = 1000;
+          const height = 500;
+          const margin = { top: 20, right: 50, bottom: 70, left: 150 };
+          const colorScale = d3.scaleOrdinal(d3.schemeTableau10);
+
+          const escala_x = d3
+            .scalePoint()
+            .domain(["1970's", "1980's", "1990's", "2000's", "2010's"])
+            .range([margin.left, width - margin.right]);
+
+          let escala_y;
+          const svg = d3.select("#slopechart");
+
+          function drawChart(data) {
+            svg.selectAll("*").remove();
+            const allValues = data.flatMap((d) => [
+              d["1970's"],
+              d["1980's"],
+              d["1990's"],
+              d["2000's"],
+              d["2010's"],
+            ]);
+            const yExtent = d3.extent(allValues);
+            escala_y = d3
+              .scaleLinear()
+              .domain([yExtent[0], yExtent[1]])
+              .range([height - margin.bottom, margin.top])
+              .nice();
+
+            const yAxis = d3
+              .axisRight(escala_y)
+              .ticks(10)
+              .tickFormat(d3.format(".1f"));
+            svg
+              .append("g")
+              .attr("class", "y-axis")
+              .attr("transform", `translate(${width - margin.right}, 0)`)
+              .call(yAxis);
+
+            escala_x.domain().forEach((decade) => {
+              svg
+                .append("line")
+                .attr("x1", escala_x(decade))
+                .attr("y1", escala_y.range()[0])
+                .attr("x2", escala_x(decade))
+                .attr("y2", escala_y.range()[1])
+                .attr("stroke", "gray")
+                .attr("stroke-width", 1)
+                .attr("stroke-opacity", 0.3);
+
+              svg
+                .append("text")
+                .attr("class", "axis-label")
+                .attr("x", escala_x(decade))
+                .attr("y", height - margin.bottom + 30)
+                .attr("text-anchor", "middle")
+                .text(decade);
+            });
+
+            data.forEach((cityData, index) => {
+              const line = svg
+                .append("path")
+                .datum(
+                  escala_x
+                    .domain()
+                    .map((decade) => [
+                      escala_x(decade),
+                      escala_y(cityData[decade]),
+                    ])
+                )
+                .attr("fill", "none")
+                .attr("stroke", colorScale(cityData.Cidade))
+                .attr("stroke-width", 2)
+                .attr(
+                  "d",
+                  d3
+                    .line()
+                    .x((d) => d[0])
+                    .y((d) => d[1])
+                );
+
+              const labelPositions = new Map();
+              const labelOffsetStep = 12;
+
+              escala_x.domain().forEach((decade, i) => {
+                svg
+                  .append("circle")
+                  .attr("cx", escala_x(decade))
+                  .attr("cy", escala_y(cityData[decade]))
+                  .attr("r", 2.5)
+                  .attr("fill", colorScale(cityData.Cidade));
+
+                if (i < escala_x.domain().length - 1) {
+                  const labelY = escala_y(cityData[decade]);
+                  const adjustedY = labelPositions.has(labelY)
+                    ? labelY + labelPositions.get(labelY) * labelOffsetStep
+                    : labelY;
+
+                  svg
+                    .append("text")
+                    .attr("x", escala_x(decade))
+                    .attr("y", adjustedY - 10)
+                    .attr("class", "value-label")
+                    .attr("text-anchor", "middle")
+                    .text(cityData[decade]?.toFixed(1) || "");
+
+                  labelPositions.set(
+                    labelY,
+                    (labelPositions.get(labelY) || 0) + 1
+                  );
+                }
+              });
+
+              const cityLabelY =
+                escala_y(cityData["1970's"]) + (index % 2 === 0 ? -1 : 1) * 15;
+              svg
+                .append("text")
+                .attr("class", "city-label")
+                .attr("x", escala_x("1970's") - 10)
+                .attr("y", cityLabelY)
+                .attr("dy", "0.35em")
+                .text(cityData.Cidade)
+                .attr("fill", colorScale(cityData.Cidade))
+                .attr("text-anchor", "end");
+            });
+          }
+
+          const citySearch = document.getElementById("city-search");
+          const datalist = document.getElementById("cities");
+          const checkboxContainer = d3.select("#checkbox-container");
+
+          base_city.forEach((d) => {
+            const option = document.createElement("option");
+            option.value = d.Cidade;
+            datalist.appendChild(option);
+          });
+
+          citySearch.addEventListener("change", () => {
+            const selectedCity = citySearch.value;
+            if (!selectedCity) return;
+
+            const isAlreadySelected = Array.from(
+              checkboxContainer.selectAll("input").nodes()
+            ).some((input) => input.value === selectedCity);
+
+            if (!isAlreadySelected) {
+              const checkbox = checkboxContainer.append("div");
+              checkbox
+                .append("input")
+                .attr("type", "checkbox")
+                .attr("value", selectedCity)
+                .attr("checked", true)
+                .on("change", updateChart);
+
+              checkbox.append("label").text(selectedCity);
+              updateChart();
+            }
+            citySearch.value = "";
+          });
+
+          document
+            .getElementById("clear-button")
+            .addEventListener("click", () => {
+              checkboxContainer.selectAll("div").remove();
+              drawChart([]);
+            });
+
+          function updateChart() {
+            const selectedCities = Array.from(
+              checkboxContainer.selectAll("input:checked").nodes()
+            ).map((checkbox) => checkbox.value);
+
+            const filteredData = base_city.filter((d) =>
+              selectedCities.includes(d.Cidade)
+            );
+
+            drawChart(filteredData);
+          }
+
+          escala_x.domain().forEach((decade) => {
+            svg
+              .append("text")
+              .attr("x", escala_x(decade))
+              .attr("y", height - margin.bottom + 30)
+              .attr("text-anchor", "middle")
+              .style("fill", "white")
+              .text(decade);
+          });
+
+          data.forEach((cityData, index) => {
+            escala_x.domain().forEach((decade, i) => {
+              svg
+                .append("text")
+                .attr("x", escala_x(decade))
+                .attr("y", escala_y(cityData[decade]) - 10)
+                .attr("text-anchor", "middle")
+                .style("fill", "white")
+                .text(cityData[decade]?.toFixed(1) || "");
+            });
+
+            const cityLabelY =
+              escala_y(cityData["1970's"]) + (index % 2 === 0 ? -15 : 15);
+            svg
+              .append("text")
+              .attr("x", escala_x("1970's") - 10)
+              .attr("y", cityLabelY)
+              .attr("dy", "0.35em")
+              .attr("text-anchor", "end")
+              .style("fill", "white")
+              .text(cityData.Cidade);
+          });
+        </script>
+      </div>
+      <div id="narrative_path">
+        <section>
+          <h2>
+            ¿Cómo ha evolucionado la Temperatura de Bulbo Húmedo en las Ciudades
+            de América Latina?
+          </h2>
+          <p>
+            En este análisis, investigamos las 100 ciudades más grandes de
+            América Latina, evaluando la evolución de la TW entre 1970 y 2023. A
+            partir de datos proporcionados por el investigador Colin Raymond, de
+            UCLA, y recopilados por estaciones meteorológicas del conjunto
+            HadISD, analizamos cómo esta variable ha cambiado en las últimas
+            cinco décadas.
+          </p>
+        </section>
+
+        <section>
+          <h2>Qué revelan los datos</h2>
+          <ul>
+            <li>
+              El promedio de TW para las 100 ciudades estudiadas muestra una
+              tendencia lineal de aumento a lo largo del tiempo.
+            </li>
+            <li>
+              Entre 1971-1980 y 2013-2023, las ciudades de la región han
+              mostrado un cambio claro en los patrones de TW, especialmente en
+              zonas costeras y tropicales.
+            </li>
+            <li>
+              Factores como la urbanización acelerada y el cambio climático han
+              contribuido significativamente al incremento de los valores
+              promedio de TW.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h1 style="color: whitesmoke">
+            Temperatura media máxima del bulbo húmedo en América Latina
+          </h1>
+          <iframe
+            src="chart1.html"
+            style="width: 100%; height: 1000px"
+          ></iframe>
+        </section>
+        <section>
+          <h1>¿Cómo afecta esto al clima y a los ecosistemas?</h1>
+          <p>
+            La clasificación climática de Köppen-Geiger nos ayuda a identificar
+            qué tipos de clima en la región están más expuestos al aumento de la
+            TW. Las regiones tropicales y subtropicales, especialmente las áreas
+            de bosques y sabanas, presentan mayor vulnerabilidad. Estas zonas
+            enfrentan no solo desafíos para la habitabilidad humana, sino
+            también impactos ecológicos gr aves, como la alteración de
+            ecosistemas y la pérdida de biodiversidad.
+          </p>
+        </section>
+        <section>
+          <h3>
+            Los climas tropicales experimentan los mayores aumentos de
+            temperatura de bulbo húmedo
+          </h3>
+          <iframe
+            src="funciona.html"
+            ,
+            style="width: 100%; height: 1000px"
+          ></iframe>
+        </section>
+
+        <section>
+          <h2>El Futuro: ¿Alarmismo o Realismo?</h2>
+          <p>
+            Aunque titulares como "América Latina Inhabitable en 2050" puedan
+            sonar alarmistas, los datos nos obligan a enfrentar una realidad
+            ineludible: mientras que algunos cambios ya son irreversibles, aún
+            hay espacio para mitigar los impactos más extremos. Invertir en
+            políticas públicas, planeamiento urbano sostenible e infraestructura
+            resiliente es esencial para reducir los riesgos asociados al aumento
+            de la TW.
+          </p>
+        </section>
+        <section>
+          <h2>Fuentes de los Datos</h2>
+          <ul>
+            <li>
+              Colin Raymond et al. (2019). The emergence of heat and humidity
+              too severe for human tolerance. Science Advances. Disponible en:
+              https://www.science.org/doi/10.1126/sciadv.aaw1838
+            </li>
+            <li>
+              ONU-Hábitat (2022). Informe Anual sobre Urbanización. Disponible
+              en:
+              https://brasil.un.org/pt-br/240326-relatório-anual-do-onu-habitat
+            </li>
+          </ul>
+        </section>
+        <p>
+          Esta investigación es una invitación a reflexionar: ¿cómo podemos
+          garantizar un futuro habitable para nuestras ciudades frente a un
+          clima cada vez más extremo? Aunque los límites de la adaptación humana
+          están siendo probados, las soluciones aún están al alcance de nuestras
+          manos.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

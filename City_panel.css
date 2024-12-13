@@ -1,0 +1,314 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+body {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #262624;
+  color: #333;
+}
+
+#intro-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: none;
+}
+
+#intro-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  z-index: 0;
+}
+
+#content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: rgb(255, 255, 254);
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 30px 50px;
+
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  font-size: xx-large;
+}
+
+#content h1 {
+  margin-bottom: 20px;
+}
+
+#content p {
+  line-height: 1.8;
+}
+
+:root {
+  --termometro: red;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#impactos {
+  display: flex;
+  gap: 16px;
+  p {
+    border: 0px solid gray;
+    padding: 16px;
+    width: calc(100% - 32px);
+    border-radius: 20px;
+  }
+}
+
+.termometro-container {
+  width: 800px;
+  margin: 20px auto;
+  position: relative;
+}
+
+#termometro {
+  appearance: none;
+  width: 100%;
+  background: linear-gradient(
+    to right,
+    #262624,
+    #ff9900,
+    #f48800,
+    #e87700,
+    #cf5600,
+    #b43300
+  );
+  outline: black;
+
+  border-radius: 8px;
+  margin: 1px;
+}
+
+#humano::before,
+#ambiente::before {
+  content: "Impacto Humano";
+  display: block;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 75%;
+  margin-bottom: 1em;
+}
+
+#ambiente::before {
+  content: "Impacto Medioambiental";
+}
+
+#temp::before {
+  content: "Temperatura del bulbo húmedo";
+  display: block;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 15px;
+  margin-bottom: 1em;
+}
+#temp {
+  font-size: 50px;
+  p {
+    padding: 16px;
+    width: calc(100% - 32px);
+    border-radius: 20px;
+  }
+}
+
+#main_head {
+  max-width: 90%;
+  margin: 20px auto;
+  color: whitesmoke;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#impactos {
+  max-width: 90%;
+  margin: 20px auto;
+  color: whitesmoke;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#intermed {
+  max-width: 90%;
+  margin: 20px auto;
+  color: whitesmoke;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#narrative_path {
+  max-width: 90%;
+  margin: 20px auto;
+  color: whitesmoke;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#chart1 {
+  max-width: 90%;
+  max-height: 100%;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+#chart2 {
+  max-width: 90%;
+  max-height: 100%;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+#selector input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+#clear-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+#clear-button:hover {
+  background-color: #c0392b;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+}
+
+#exploratory_path {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  gap: 1%;
+  padding: 10px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+#selector {
+  flex: 0 0 25%;
+  height: 90%;
+  background: #5c5c5b;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50px;
+  padding: 20px;
+  color: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+#selector input[type="text"] {
+  width: 90%;
+  margin: 0 auto;
+  display: block;
+  padding: 10px;
+  font-size: 1rem;
+  background-color: #2d3748;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#container-chart {
+  height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(blue),
+    url("https://source.unsplash.com/1600x900/?data,chart");
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  overflow: visible;
+  border-radius: 50px;
+  padding: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  overflow: visible;
+  display: block;
+  margin: 0 auto;
+}
+
+text {
+  fill: white !important;
+}
+
+.city-label {
+  font-size: 12px;
+  font-weight: bold;
+  text-anchor: end;
+  fill: whitesmoke;
+  transform: translate(-10px, -10px);
+}
+
+#container-chart .data-label,
+#container-chart .x-axis-label {
+  fill: white;
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  #exploratory_path {
+    flex-direction: column;
+    height: auto;
+    gap: 20px;
+  }
+
+  #selector,
+  #container-chart {
+    flex: none;
+    width: 100%;
+    height: 50vh;
+  }
+
+  #container-chart svg {
+    height: auto;
+    color: #ffffff;
+  }
+}
+
+iframe {
+  pointer-events: auto;
+}

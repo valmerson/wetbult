@@ -1,0 +1,490 @@
+<!-- <!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>REF VINI</title>
+
+    <style>
+      :root {
+        --termometro: red;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      #impactos {
+        display: flex;
+
+        gap: 16px;
+
+        p {
+          border: 1px solid gray;
+
+          padding: 16px;
+
+          width: calc(100% - 32px);
+        }
+      }
+
+      #humano::before,
+      #ambiente::before {
+        content: "Impacto Humano";
+
+        display: block;
+
+        font-weight: bold;
+
+        text-transform: uppercase;
+
+        font-size: 75%;
+
+        margin-bottom: 1em;
+      }
+
+      #ambiente::before {
+        content: "Impacto Ambiental";
+      }
+
+      /********** Range Input Styles **********/
+
+      /*Range Reset*/
+
+      input[type="range"] {
+        -webkit-appearance: none;
+
+        appearance: none;
+
+        background: transparent;
+
+        cursor: pointer;
+
+        width: 15rem;
+      }
+
+      /* Removes default focus */
+
+      input[type="range"]:focus {
+        outline: none;
+      }
+
+      /***** Chrome, Safari, Opera and Edge Chromium styles *****/
+
+      /* slider track */
+
+      input[type="range"]::-webkit-slider-runnable-track {
+        background-color: var(--termometro);
+
+        border-radius: 0.5rem;
+
+        height: 0.5rem;
+      }
+
+      /* slider thumb */
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none; /* Override default look */
+
+        appearance: none;
+
+        margin-top: -12px; /* Centers thumb on the track */
+
+        /*custom styles*/
+
+        background-color: #5cd5eb;
+
+        height: 2rem;
+
+        width: 1rem;
+      }
+
+      input[type="range"]:focus::-webkit-slider-thumb {
+        border: 1px solid var(--termometro);
+
+        outline: 3px solid var(--termometro);
+
+        outline-offset: 0.125rem;
+      }
+
+      /******** Firefox styles ********/
+
+      /* slider track */
+
+      input[type="range"]::-moz-range-track {
+        background-color: var(--termometro);
+
+        border-radius: 0.5rem;
+
+        height: 0.5rem;
+      }
+
+      /* slider thumb */
+
+      input[type="range"]::-moz-range-thumb {
+        border: none; /*Removes extra border that FF applies*/
+
+        border-radius: 0; /*Removes default border-radius that FF applies*/
+
+        /*custom styles*/
+
+        background-color: #5cd5eb;
+
+        height: 2rem;
+
+        width: 1rem;
+      }
+
+      input[type="range"]:focus::-moz-range-thumb {
+        border: 1px solid var(--termometro);
+
+        outline: 3px solid var(--termometro);
+
+        outline-offset: 0.125rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <input id="termometro" type="range" min="26" max="34" step="2" value="26" />
+
+    <div id="impactos">
+      <p id="humano"></p>
+
+      <p id="ambiente"></p>
+    </div>
+
+    <script>
+      const temperaturas = [
+        {
+          celsius: 26,
+
+          humano: "Lalala",
+
+          ambiente: "Lululu",
+        },
+
+        {
+          celsius: 28,
+
+          humano: "Hahaha",
+
+          ambiente: "Huhuhu",
+        },
+      ];
+
+      function mostrarImpacto() {
+        const match = temperaturas.find(
+          (temperatura) => temperatura.celsius === Number(termometro.value)
+        );
+
+        if (!match) return;
+
+        humano.textContent = match.humano;
+
+        ambiente.textContent = match.ambiente;
+
+        // Atualiza a variavel CSS --temperatura
+      }
+
+      termometro.oninput = mostrarImpacto;
+
+      mostrarImpacto();
+    </script>
+  </body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perlin Noise Blob</title>
+    <style>
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #000;
+      }
+      canvas {
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script>
+      let noiseMax = 5;
+      let zoff = 0; // Variável para o terceiro parâmetro de ruído, o "z"
+
+      function setup() {
+        createCanvas(400, 400);
+        noFill();
+        stroke(255);
+        strokeWeight(4);
+      }
+
+      function draw() {
+        background(0);
+        translate(width / 2, height / 2);
+        beginShape();
+        let noiseFactor = noiseMax + sin(frameCount * 0.02) * 3; // Altera o ruído ao longo do tempo
+        for (let a = 0; a < TWO_PI; a += 0.1) {
+          let xoff = map(cos(a), -1, 1, 0, noiseFactor);
+          let yoff = map(sin(a), -1, 1, 0, noiseFactor);
+          let r = map(noise(xoff, yoff, zoff), 0, 1, 100, 200);
+          let x = r * cos(a);
+          let y = r * sin(a);
+          vertex(x, y);
+        }
+        endShape(CLOSE);
+        zoff += 0.1; // Incrementa o zoff para alterar o ruído ao longo do tempo
+      }
+    </script>
+  </body>
+</html> -->
+
+<!-- pixels variados
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa de Calor Dinâmico em Pixels</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        overflow: hidden;
+        height: 100%;
+      }
+      canvas {
+        display: block; /* Remove o espaçamento em torno do canvas */
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  </head>
+  <body>
+    <script>
+      const gridSize = 10; // Tamanho de cada quadrado no grid
+
+      function setup() {
+        createCanvas(windowWidth, windowHeight);
+        noStroke();
+        frameRate(10); // Reduz o frame rate para visualização mais clara
+      }
+
+      function draw() {
+        background(0);
+        for (let x = 0; x < width; x += gridSize) {
+          for (let y = 0; y < height; y += gridSize) {
+            const noiseVal = noise(x * 0.1, y * 0.1, frameCount * 0.1);
+            fill(noiseVal * 255, noiseVal * 100, 100); // Variação de cor baseada no ruído
+            rect(x, y, gridSize, gridSize); // Desenha cada quadrado
+          }
+        }
+      }
+    </script>
+  </body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa de Calor Dinâmico Avançado</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        overflow: hidden;
+        height: 100%;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  </head>
+  <body>
+    <script>
+      const gridSize = 20; // Tamanho dos quadrados no grid
+      const numCenters = 10; // Número de centros de calor
+      let heatCenters = [];
+
+      function setup() {
+        createCanvas(windowWidth, windowHeight);
+        noStroke();
+        frameRate(10); // Reduzindo a taxa de quadros para suavizar a animação
+
+        // Inicializa os centros de calor
+        for (let i = 0; i < numCenters; i++) {
+          heatCenters.push(createHeatCenter());
+        }
+      }
+
+      function draw() {
+        background("#B43300"); // Cor de fundo menos intensa
+
+        // Atualiza os centros de calor
+        heatCenters.forEach((center) => {
+          updateHeatCenter(center);
+        });
+
+        // Desenha os quadrados baseados na influência dos centros de calor
+        for (let x = 0; x < width; x += gridSize) {
+          for (let y = 0; y < height; y += gridSize) {
+            let heat = calculateHeat(x, y);
+            fill(getColor(heat));
+            rect(x, y, gridSize, gridSize);
+          }
+        }
+      }
+
+      function createHeatCenter() {
+        return {
+          x: random(width),
+          y: random(height),
+          strength: random(50, 150),
+          dx: random(-0.5, 0.5),
+          dy: random(-0.5, 0.5),
+        };
+      }
+
+      function updateHeatCenter(center) {
+        center.x += center.dx;
+        center.y += center.dy;
+        center.strength += random(-2, 2); // Variação mais suave da intensidade
+
+        // Garante que o centro fique dentro dos limites
+        center.x = (center.x + width) % width;
+        center.y = (center.y + height) % height;
+      }
+
+      function calculateHeat(x, y) {
+        let totalHeat = 0;
+        heatCenters.forEach((center) => {
+          let distance = dist(x, y, center.x, center.y);
+          totalHeat += center.strength * Math.max(0, (200 - distance) / 200);
+        });
+        return totalHeat;
+      }
+
+      function getColor(heat) {
+        if (heat > 400) return "#B43300";
+        else if (heat > 300) return "#CF5600";
+        else if (heat > 200) return "#E87700";
+        else if (heat > 100) return "#F48800";
+        else return "#262624";
+      }
+    </script>
+  </body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa de Calor Dinâmico</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <style>
+      body,
+      html {
+        margin: 0;
+        overflow: hidden;
+        height: 100%;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function setup() {
+        createCanvas(windowWidth, windowHeight);
+        noStroke();
+        colorMode(HSB, 360, 100, 100); // Usando HSB para controle de cor
+        frameRate(10);
+      }
+
+      function draw() {
+        background(0, 0, 95); // Fundo claro para contraste
+        let gridSize = 10; // Tamanho dos quadrados no grid
+        for (let x = 0; x < width; x += gridSize) {
+          for (let y = 0; y < height; y += gridSize) {
+            // Ruído de Perlin para suavizar o gradiente
+            const heat = noise(x * 0.01, y * 0.01, frameCount * 0.01) * 360;
+            fill(heat, 80, 90); // Saturação e brilho constantes, hue varia
+            rect(x, y, gridSize, gridSize);
+          }
+        }
+      }
+    </script>
+  </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa de Calor Dinâmico</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <style>
+      body,
+      html {
+        margin: 0;
+        overflow: hidden;
+        height: 100%;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function setup() {
+        createCanvas(windowWidth, windowHeight);
+        noStroke();
+        colorMode(HSB, 360, 100, 100); // Modo HSB para um controle de cor mais intuitivo
+        frameRate(30); // Aumenta a taxa de quadros para uma animação mais fluida
+      }
+
+      function draw() {
+        background("#262624"); // Define a cor de fundo escura
+        let gridSize = 10; // Tamanho dos quadrados no grid
+        for (let x = 0; x < width; x += gridSize) {
+          for (let y = 0; y < height; y += gridSize) {
+            const heat = noise(x * 0.01, y * 0.01, frameCount * 0.01) * 10; // Uso do ruído de Perlin para gerar calor
+            fill(getColor(heat)); // Preenche cada quadrado com a cor baseada no calor
+            rect(x, y, gridSize, gridSize); // Desenha cada quadrado
+          }
+        }
+      }
+
+      function getColor(heat) {
+        // Retorna a cor baseada no valor de calor
+        if (heat > 4.5) return "#FF9900"; // Laranja mais brilhante
+        else if (heat > 4) return "#FCAA00"; // Laranja intermediário
+        else if (heat > 3.5) return "#F9BB00"; // Laranja amarelado
+        else if (heat > 3) return "#F6CC00"; // Amarelo laranja
+        else if (heat > 2.5) return "#CF5600"; // Amarelo dourado
+        else if (heat > 2) return "#E87700"; // Laranja profundo
+        else if (heat > 1.5) return "#D35900"; // Laranja queimado
+        else if (heat > 1) return "#D35900"; // Vermelho laranja
+        else return "#B43300"; // Vermelho escuro
+      }
+    </script>
+  </body>
+</html>
